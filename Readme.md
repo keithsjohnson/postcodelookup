@@ -1,7 +1,7 @@
 AWS DynamoDB Postcode Store and Locator
 ---------------------------------------
 
-Uses Spring Boot, Spring Data 
+Uses Spring Boot, REST and Spring Data using AWS DynamoDB Repository.
 
 Postcode Location URLs
 ----------------------

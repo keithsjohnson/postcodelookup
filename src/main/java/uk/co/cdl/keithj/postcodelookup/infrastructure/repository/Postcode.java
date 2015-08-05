@@ -29,13 +29,7 @@ public class Postcode {
 	private String population;
 	private String households;
 
-	public Postcode(String postcode, String latitude, String longitude, String population, String households) {
-		super();
-		this.postcode = postcode;
-		this.latitude = latitude;
-		this.longitude = longitude;
-		this.population = population;
-		this.households = households;
+	public Postcode() {
 	}
 
 	@DynamoDBHashKey(attributeName = "Postcode")

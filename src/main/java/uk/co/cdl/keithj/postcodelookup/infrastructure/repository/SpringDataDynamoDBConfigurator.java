@@ -27,24 +27,17 @@ import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import com.amazonaws.auth.AWSCredentials;
-import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 
 @Configuration
 @EnableWebMvc
 @EnableDynamoDBRepositories(basePackages = "uk.co.cdl.keithj.postcodelookup.infrastructure.repository", dynamoDBOperationsRef = "dynamoDBOperations")
-// @Import(value = DemoRestMvcConfiguration.class)
-public class SpringDataDynamoDemoConfig {
+public class SpringDataDynamoDBConfigurator {
 
 	@Value("${amazon.dynamodb.endpoint}")
 	private String amazonDynamoDBEndpoint;
-
-	@Value("${amazon.aws.accesskey}")
-	private String amazonAWSAccessKey;
-
-	@Value("${amazon.aws.secretkey}")
-	private String amazonAWSSecretKey;
 
 	@Bean
 	public AmazonDynamoDB amazonDynamoDB() {
@@ -60,9 +53,14 @@ public class SpringDataDynamoDemoConfig {
 		return new DynamoDBTemplate(amazonDynamoDB());
 	}
 
+	/**
+	 * The AWS Credentials are retrieved from $USER_HOME/.aws/credentials.
+	 * 
+	 * @return the AWS Credentials
+	 */
 	@Bean
 	public AWSCredentials amazonAWSCredentials() {
-		return new BasicAWSCredentials(amazonAWSAccessKey, amazonAWSSecretKey);
+		return new ProfileCredentialsProvider().getCredentials();
 	}
 
 	/**
@@ -72,7 +70,6 @@ public class SpringDataDynamoDemoConfig {
 	 * DynamoDBOperations bean, rather than with reference to AmazonDynamoDB
 	 * client
 	 */
-
 	@Bean
 	public LocalValidatorFactoryBean validator() {
 		return new LocalValidatorFactoryBean();

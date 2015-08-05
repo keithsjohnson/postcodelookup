@@ -15,12 +15,9 @@ public class SavePostcodeLocation {
 	private PostcodeRepository postcodeRepository;
 
 	@RequestMapping(value = "/savepostcodelocation")
-	public @ResponseBody String puPostcodeLocation(String postcode, String latitude, String longitude,
-			String population, String households) {
+	public @ResponseBody String savePostcodeLocation(Postcode postcode) {
 
-		Postcode postcodeObject = new Postcode(postcode, latitude, longitude, population, households);
-
-		Postcode postcodeSaved = postcodeRepository.save(postcodeObject);
+		Postcode postcodeSaved = postcodeRepository.save(postcode);
 		System.out.println(postcodeSaved.toString());
 		return "OK";
 	}

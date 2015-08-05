@@ -18,8 +18,10 @@ public class RetrievePostcodeLocation {
 	@RequestMapping(value = "/locatepostcode")
 	public @ResponseBody PostcodeLocation locatePostcode(String postcode) {
 		Postcode postcodeObject = postcodeRepository.findOne(postcode);
+
 		PostcodeLocation postcodeLocation = new PostcodeLocation(postcodeObject.getPostcode(),
 				postcodeObject.getLatitude(), postcodeObject.getLongitude());
+
 		return postcodeLocation;
 	}
 }

@@ -26,8 +26,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
-import com.amazonaws.auth.AWSCredentials;
-import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 
@@ -41,7 +39,9 @@ public class SpringDataDynamoDBConfigurator {
 
 	@Bean
 	public AmazonDynamoDB amazonDynamoDB() {
-		AmazonDynamoDB amazonDynamoDB = new AmazonDynamoDBClient(amazonAWSCredentials());
+		AmazonDynamoDB amazonDynamoDB = new AmazonDynamoDBClient();
+		// AmazonDynamoDB amazonDynamoDB = new
+		// AmazonDynamoDBClient(amazonAWSCredentials());
 		if (StringUtils.isNotEmpty(amazonDynamoDBEndpoint)) {
 			amazonDynamoDB.setEndpoint(amazonDynamoDBEndpoint);
 		}
@@ -58,10 +58,11 @@ public class SpringDataDynamoDBConfigurator {
 	 * 
 	 * @return the AWS Credentials
 	 */
-	@Bean
-	public AWSCredentials amazonAWSCredentials() {
-		return new ProfileCredentialsProvider().getCredentials();
-	}
+	// @Bean
+	// public AWSCredentials amazonAWSCredentials() {
+	// return new InstanceProfileCredentialsProvider().getCredentials();
+	// return new ProfileCredentialsProvider().getCredentials();
+	// }
 
 	/**
 	 * The following validation-related beans are optional - only required if

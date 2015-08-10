@@ -26,6 +26,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
+import com.amazonaws.auth.AWSCredentials;
+import com.amazonaws.auth.InstanceProfileCredentialsProvider;
+import com.amazonaws.auth.profile.ProfileCredentialsProvider;
+import com.amazonaws.regions.Region;
+import com.amazonaws.regions.Regions;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 
@@ -37,14 +42,19 @@ public class SpringDataDynamoDBConfigurator {
 	@Value("${amazon.dynamodb.endpoint}")
 	private String amazonDynamoDBEndpoint;
 
+	@Value("${use.profile.credentials:false}")
+	private boolean useProfileCredentials = false;
+
+	@Value("${amazon.region:eu-west-1}")
+	private String amazonRegion;
+
 	@Bean
 	public AmazonDynamoDB amazonDynamoDB() {
-		AmazonDynamoDB amazonDynamoDB = new AmazonDynamoDBClient();
-		// AmazonDynamoDB amazonDynamoDB = new
-		// AmazonDynamoDBClient(amazonAWSCredentials());
+		AmazonDynamoDB amazonDynamoDB = new AmazonDynamoDBClient(amazonAWSCredentials());
 		if (StringUtils.isNotEmpty(amazonDynamoDBEndpoint)) {
 			amazonDynamoDB.setEndpoint(amazonDynamoDBEndpoint);
 		}
+		amazonDynamoDB.setRegion(amazonRegion());
 		return amazonDynamoDB;
 	}
 
@@ -54,15 +64,24 @@ public class SpringDataDynamoDBConfigurator {
 	}
 
 	/**
-	 * The AWS Credentials are retrieved from $USER_HOME/.aws/credentials.
+	 * The AWS Credentials are retrieved from $USER_HOME/.aws/credentials or
+	 * from Instance Profile when on AWS.
 	 * 
 	 * @return the AWS Credentials
 	 */
-	// @Bean
-	// public AWSCredentials amazonAWSCredentials() {
-	// return new InstanceProfileCredentialsProvider().getCredentials();
-	// return new ProfileCredentialsProvider().getCredentials();
-	// }
+	@Bean
+	public AWSCredentials amazonAWSCredentials() {
+		if (useProfileCredentials) {
+			return new ProfileCredentialsProvider().getCredentials();
+		} else {
+			return new InstanceProfileCredentialsProvider().getCredentials();
+		}
+	}
+
+	@Bean
+	public Region amazonRegion() {
+		return Region.getRegion(Regions.fromName(amazonRegion));
+	}
 
 	/**
 	 * The following validation-related beans are optional - only required if

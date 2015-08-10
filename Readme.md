@@ -12,6 +12,8 @@ Deployment to Elasticbeanstalk as a Docker Image.
 Need to add the following Role Policy to the Elasticbeanstalk Image Role:
 - AmazonDynamoDBFullAccess
 
+Need to create DynamoDB table called Postcode
+
 Postcode Location URLs
 ----------------------
 Save a Postcode and location:

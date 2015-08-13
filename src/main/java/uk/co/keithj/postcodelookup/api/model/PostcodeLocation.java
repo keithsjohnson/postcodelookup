@@ -1,4 +1,4 @@
-package uk.co.cdl.keithj.postcodelookup.api.model;
+package uk.co.keithj.postcodelookup.api.model;
 
 public class PostcodeLocation {
 	private final String postcode;

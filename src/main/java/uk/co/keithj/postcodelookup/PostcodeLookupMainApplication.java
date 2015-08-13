@@ -1,4 +1,4 @@
-package uk.co.cdl.keithj.postcodelookup;
+package uk.co.keithj.postcodelookup;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

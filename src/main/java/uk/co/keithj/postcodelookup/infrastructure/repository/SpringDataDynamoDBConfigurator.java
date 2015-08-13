@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package uk.co.cdl.keithj.postcodelookup.infrastructure.repository;
+package uk.co.keithj.postcodelookup.infrastructure.repository;
 
 import org.apache.commons.lang3.StringUtils;
 import org.socialsignin.spring.data.dynamodb.core.DynamoDBOperations;
